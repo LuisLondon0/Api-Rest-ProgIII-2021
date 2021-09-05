@@ -1,0 +1,18 @@
+{
+    "db-connections": {
+        "mongodb": {
+            "host": "cluster0.np8f2.mongodb.net",
+            "user": "acad_rest_api_user",
+            "password": "HNCkda32",
+            "dbname": "AcademicDB"
+        }
+    },
+    "secretKeys": {
+        "cryptojs": "ApiRest@2021"
+    },
+    "roles": {
+        "student": 1,
+        "teacher": 2
+    },
+    "server-port": 3000
+}
