@@ -23,6 +23,14 @@ app.get("/", (req, res, next) => {
 })
 
 
+/** user routes loading */
+const userRoutes = require("./routes/user.routes")
+userRoutes(app)
+
+/** token middleware */
+const tkFn = require("./middleware/verifyToken")
+app.use(tkFn)
+
 /** student routes loading */
 const studentRoutes = require("./routes/student.routes")
 studentRoutes(app)
@@ -30,6 +38,14 @@ studentRoutes(app)
 /** teacher routes loading */
 const teacherRoutes = require("./routes/teacher.routes")
 teacherRoutes(app)
+
+/** course routes loading */
+const courseRoutes = require("./routes/course.routes")
+courseRoutes(app)
+
+/** period routes loading */
+const periodRoutes = require("./routes/period.routes")
+periodRoutes(app)
 
 app.listen(port, () => {
     console.log("Server is running..")

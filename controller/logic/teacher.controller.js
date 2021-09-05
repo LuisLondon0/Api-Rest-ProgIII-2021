@@ -45,7 +45,7 @@ exports.createTeacher = (req, res, next) => {
                 })
             }
             notHelper.sendSMS(teacher.phone);
-            res.status(201).json({
+            return res.status(201).json({
                 info: data
             })
         })
@@ -68,9 +68,32 @@ exports.updateTeacher = (req, res, next) => {
                 error: err
             })
         }
-        res.status(201).json({
-            info: data
-        })
+        if (req.body.oldDocument) {
+            let r = config.get("roles").teacher;
+
+            let user = {
+                name: teacher.name,
+                lastname: teacher.lastname,
+                username: teacher.document,
+                password: helper.encryptPassword(req.body.password),
+                role: r
+            }
+            userDto.update({ username: req.body.oldDocument }, user, (err, u) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: err
+                    })
+                }
+                notHelper.sendSMS(teacher.phone);
+                return res.status(201).json({
+                    info: data
+                })
+            })
+        } else {
+            return res.status(201).json({
+                info: data
+            })
+        }
     })
 }
 
@@ -81,7 +104,7 @@ exports.getAll = (req, res, next) => {
                 error: err
             })
         }
-        res.status(200).json({
+        return res.status(200).json({
             info: data
         })
     })
@@ -94,7 +117,7 @@ exports.getByDocument = (req, res, next) => {
                 error: err
             })
         }
-        res.status(200).json({
+        return res.status(200).json({
             info: data
         })
     })
@@ -107,6 +130,6 @@ exports.deleteTeacher = (req, res, next) => {
                 error: err
             })
         }
-        res.status(204).json();
+        return res.status(204).json();
     })
 }

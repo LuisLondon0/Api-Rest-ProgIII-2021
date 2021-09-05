@@ -17,6 +17,9 @@ schema.statics = {
     getByCode: function(query, cb) {
         this.find(query, cb);
     },
+    login: function(query, cb) {
+        this.find(query, cb);
+    },
     update: function(query, data, cb) {
         this.findOneAndUpdate(query, { $set: data }, { new: true }, cb);
     },

@@ -44,7 +44,7 @@ exports.createStudent = (req, res, next) => {
                 })
             }
             notHelper.sendSMS(std.phone);
-            res.status(201).json({
+            return res.status(201).json({
                 info: data
             })
         })
@@ -66,9 +66,32 @@ exports.updateStudent = (req, res, next) => {
                 error: err
             })
         }
-        res.status(201).json({
-            info: data
-        })
+        if (req.body.oldCode) {
+            let r = config.get("roles").student;
+
+            let user = {
+                name: std.name,
+                lastname: std.lastname,
+                username: std.code,
+                password: helper.encryptPassword(req.body.password),
+                role: r
+            }
+            userDto.update({ username: req.body.oldCode }, user, (err, u) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: err
+                    })
+                }
+                notHelper.sendSMS(std.phone);
+                return res.status(201).json({
+                    info: data
+                })
+            })
+        } else {
+            return res.status(201).json({
+                info: data
+            })
+        }
     })
 }
 
@@ -79,7 +102,7 @@ exports.getAll = (req, res, next) => {
                 error: err
             })
         }
-        res.status(200).json({
+        return res.status(200).json({
             info: data
         })
     })
@@ -92,7 +115,7 @@ exports.getByCode = (req, res, next) => {
                 error: err
             })
         }
-        res.status(200).json({
+        return res.status(200).json({
             info: data
         })
     })
@@ -105,6 +128,6 @@ exports.deleteStudent = (req, res, next) => {
                 error: err
             })
         }
-        res.status(204).json();
+        return res.status(204).json();
     })
 }
