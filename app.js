@@ -39,6 +39,11 @@ studentRoutes(app)
 const teacherRoutes = require("./routes/teacher.routes")
 teacherRoutes(app)
 
+/** product routes loading */
+const productRoutes = require("./routes/product.routes")
+productRoutes(app)
+
+
 /** course routes loading */
 const courseRoutes = require("./routes/course.routes")
 courseRoutes(app)
